@@ -17,11 +17,23 @@ function App() {
     }))
   }
 
+  function handleSaveProject(newProject) {
+    setProjects(prev => ({
+      ...prev,
+      currentAction: 'saving-project',
+      projects: [...prev.projects, newProject] // This is where you would add the new project to the list of projects
+    }))
+  }
+
+  console.log(projects);
+
   let content;
   if (projects.currentAction === 'no-project-created') {
     content = <FallbackProject onCreateNewProject={handleAddProject}/>;
   } else if (projects.currentAction === 'creating-project') {
-    content = <Project/>;
+    content = <Project onSaveProject={handleSaveProject}/>;
+  } else if (projects.currentAction === 'saving-project') {
+    content = <Project onSaveProject={handleSaveProject}/>;
   }
   return (
     <>
