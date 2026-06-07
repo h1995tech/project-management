@@ -40,6 +40,15 @@ function App() {
     }))
   }
 
+  function handleDeleteProject(projectId) {
+    setProjects(prev => ({
+      ...prev,
+      projects: prev.projects.filter(project => project.id !== projectId),
+      currentAction: 'no-project-created',
+      selectedProjectId: null
+    }))
+  }
+
   let content;
   if (projects.currentAction === 'no-project-created') {
     content = <FallbackProject onCreateNewProject={handleAddProject}/>;
@@ -48,7 +57,7 @@ function App() {
   } else if (projects.currentAction === 'saving-project') {
     content = <FallbackProject onSaveProject={handleSaveProject}/>;
   } else if (projects.currentAction === 'project-selected') {
-    content = <SelectedProject project={projects.projects.find(project => project.id === projects.selectedProjectId)} />;
+    content = <SelectedProject project={projects.projects.find(project => project.id === projects.selectedProjectId)} onDeleteProject={handleDeleteProject} />;
   }
   return (
     <>
