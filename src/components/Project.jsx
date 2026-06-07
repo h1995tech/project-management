@@ -1,13 +1,19 @@
 import { useRef } from "react";
 import Input from "./Input.jsx";
+import Modal from "./Modal.jsx";
 
-export default function Project({onSaveProject}) {
+export default function Project({onSaveProject, onCancelProject}) {
 
+    const modalRef = useRef();
     const title = useRef();
     const description = useRef();
     const dueDate = useRef();
 
     function handleSave() { 
+        if(title.current.value === '' || description.current.value === '' || dueDate.current.value === '') {
+            modalRef.current.open();
+            return;
+        }
         const newProject = {
             title: title.current.value,
             description: description.current.value,
@@ -18,10 +24,14 @@ export default function Project({onSaveProject}) {
     }
 
     return (
+        <>
+        <Modal ref={modalRef}>
+            <h2 className="text-xl font-bold text-stone-500 my-4">Invalid Input</h2>
+        </Modal>
         <div className="w-[35rem] mt-16">
             <menu className="flex items-center justify-end gap-4 my-4">
                 <li>
-                    <button className="text-stone-800 hover:text-stone-950">
+                    <button onClick={onCancelProject} className="text-stone-800 hover:text-stone-950">
                         Cancel
                     </button>
                 </li>
@@ -37,5 +47,6 @@ export default function Project({onSaveProject}) {
                 <Input type="date" ref={dueDate} label="Project DueDate" />
             </div>
         </div>
+        </>
     )
 }

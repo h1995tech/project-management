@@ -2,7 +2,7 @@ import { useState } from "react";
 import Sidebar from "./components/Sidebar.jsx";
 import Project from "./components/Project.jsx";
 import FallbackProject from "./components/FallbackProject.jsx";
-
+import SelectedProject from "./components/SelectedProject.jsx"; 
 function App() {
   const [projects, setProjects] = useState({
     currentAction: 'no-project-created',
@@ -24,21 +24,36 @@ function App() {
       projects: [...prev.projects, newProject] // This is where you would add the new project to the list of projects
     }))
   }
+  
+  function handleCancelAddProject(){
+    setProjects(prev => ({
+      ...prev,
+      currentAction: 'no-project-created'
+    }))
+  }
 
-  console.log(projects);
+  function handleSelectProject(projectId) {
+    setProjects(prev => ({
+      ...prev,
+      selectedProjectId: projectId,
+      currentAction: 'project-selected'
+    }))
+  }
 
   let content;
   if (projects.currentAction === 'no-project-created') {
     content = <FallbackProject onCreateNewProject={handleAddProject}/>;
   } else if (projects.currentAction === 'creating-project') {
-    content = <Project onSaveProject={handleSaveProject}/>;
+    content = <Project onSaveProject={handleSaveProject} onCancelProject={handleCancelAddProject}/>;
   } else if (projects.currentAction === 'saving-project') {
-    content = <Project onSaveProject={handleSaveProject}/>;
+    content = <FallbackProject onSaveProject={handleSaveProject}/>;
+  } else if (projects.currentAction === 'project-selected') {
+    content = <SelectedProject project={projects.projects.find(project => project.id === projects.selectedProjectId)} />;
   }
   return (
     <>
       <main className="h-screen my-8 flex gap-8">
-        <Sidebar onAddProject={handleAddProject}/>
+        <Sidebar onAddProject={handleAddProject} projects={projects.projects} onSelectProject={handleSelectProject}/>
         {content}
       </main>
     </>
