@@ -18,7 +18,12 @@ function App() {
       }))
    }
 
-  function handleDeleteTask() { }
+  function handleDeleteTask(taskId) {
+    setProjects(prev => ({
+      ...prev,
+      tasks: prev.tasks.filter(task => task.id !== taskId), // This is where you would remove the task from the list of tasks for the selected project
+    }))
+   }
 
   function handleAddProject() {
     setProjects(prev => ({
