@@ -1,4 +1,6 @@
-export default function SelectedProject({ project, onDeleteProject}) {
+import Tasks from "./Tasks.jsx";
+
+export default function SelectedProject({ project, onDeleteProject, onAddTask, onDeleteTask, tasks }) {
     return (
         <div className="w-[35rem] mt-16">
             <header className="pb-4 mb-4 border-b-2 border-stone-300">
@@ -9,6 +11,7 @@ export default function SelectedProject({ project, onDeleteProject}) {
                 <p className="mb-4 text-stone-400">{project.dueDate}</p>
                 <p className="text-stone-600 whitespace-pre-wrap">{project.description}</p>
             </header>
+            <Tasks onAdd={onAddTask} onDelete={onDeleteTask} tasks={tasks}/>
         </div>
     )
 }
